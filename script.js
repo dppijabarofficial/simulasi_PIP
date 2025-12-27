@@ -109,14 +109,13 @@ function tampilkan() {
 }
 
 
-
-function simpan(){
- let s=halaman*perHalaman;
- soal.slice(s,s+perHalaman).forEach((_,i)=>{
-   let idx=s+i;
-   let r=document.querySelector(`input[name=q${idx}]:checked`);
-   if(r)jawaban[idx]=r.value;
- });
+function simpan() {
+  let s = halaman * perHalaman;
+  soal.slice(s, s + perHalaman).forEach((_, i) => {
+    let idx = s + i;
+    let r = document.querySelector(`input[name=q${idx}]:checked`);
+    if (r) jawaban[idx] = Number(r.value);
+  });
 }
 
 function berikutnya(){
@@ -135,9 +134,8 @@ function sebelumnya() {
 
 
 function kirim() {
-  simpan(); // simpan halaman aktif
+  simpan();
 
-  // ❌ Cek soal kosong HANYA jika waktu BELUM habis
   if (!waktuHabis) {
     const kosong = semuaTerjawab();
     if (kosong !== -1) {
@@ -150,17 +148,14 @@ function kirim() {
 
   clearInterval(timer);
 
-  // === HITUNG NILAI ===
   let benar = 0;
   soal.forEach((x, i) => {
-    if (jawaban[i] === x.j) benar++;
-    // jika jawaban undefined → otomatis 0 (tidak dihitung)
+    if (Number(jawaban[i]) === x.j) benar++;
   });
 
   let nilai = Math.round((benar / soal.length) * 100);
   localStorage.setItem("nilai", nilai);
 
-  // === KIRIM DATA ===
   const formData = new FormData();
   formData.append("nama", localStorage.getItem("nama"));
   formData.append("sekolah", localStorage.getItem("sekolah"));
@@ -173,6 +168,7 @@ function kirim() {
     window.location.href = "hasil.html";
   });
 }
+
 
 
 
@@ -191,9 +187,7 @@ function pasangAutoSave() {
       const idx = parseInt(radio.name.replace("q", ""));
       jawaban[idx] = Number(radio.value);
 updateProgress();
-
 buatNavigasiSoal();
-
 
     });
   });
