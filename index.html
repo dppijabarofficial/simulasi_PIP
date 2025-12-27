@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ujian TWK Paskibraka</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+<h1>Ujian TWK Paskibraka</h1>
+
+<div class="info">
+<input id="nama" placeholder="Nama Peserta">
+<input id="sekolah" placeholder="Asal Sekolah">
+<button onclick="mulaiUjian()">Mulai Ujian</button>
+</div>
+
+<div class="timer hidden">
+⏱️ Waktu Tersisa: <span id="time">10:00</span>
+</div>
+
+<div class="progress-box hidden">
+  <div class="progress-info">
+    <span id="progressText">0 / 20 terjawab</span>
+  </div>
+  <div class="progress">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+</div>
+
+<div class="nav-soal hidden" id="navSoal"></div>
+
+
+<form id="quizForm" class="hidden">
+<div id="soalContainer"></div>
+
+<div class="nav">
+<button type="button" id="prevBtn" onclick="sebelumnya()">⬅ Sebelumnya</button>
+<button type="button" id="nextBtn" onclick="berikutnya()">Berikutnya ➡</button>
+</div>
+</form>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

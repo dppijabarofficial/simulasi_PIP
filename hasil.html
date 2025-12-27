@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hasil Ujian</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+<h1>Hasil Ujian</h1>
+
+<p><b>Nama</b></p>
+<h2 id="nama"></h2>
+
+<p><b>Sekolah</b></p>
+<h3 id="sekolah"></h3>
+
+<p><b>Nilai Akhir</b></p>
+<div id="nilai" style="font-size:3rem;color:#c70000;font-weight:bold"></div>
+
+<p id="status"></p>
+
+<button onclick="selesai()">Selesai</button>
+</div>
+
+<script>
+document.getElementById("nama").textContent=localStorage.getItem("nama");
+document.getElementById("sekolah").textContent=localStorage.getItem("sekolah");
+const nilai=localStorage.getItem("nilai");
+document.getElementById("nilai").textContent=nilai;
+document.getElementById("status").textContent=nilai>=70?"LULUS ✅":"BELUM LULUS ❌";
+
+function selesai(){
+ localStorage.clear();
+ location.href="index.html";
+}
+</script>
+
+</body>
+</html>
