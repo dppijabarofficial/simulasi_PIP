@@ -1,146 +1,255 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbx6dP6yiR8qj9Ed3BIumAGlba6RS2EmT8CKgfr01fLqq7XTbo4D4IjcZw1E6iuIlFw/exec";
-
-let waktu = 300;
-let waktuHabis = false;
-let timer;
-let halaman = 0;
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbwuvrXFMQgGrjhGQ-dD_vo0v2W_P5lCUd7SaY_x82JNCl5wxC2985_bsAo1o5wrTJM/exec";
 const perHalaman = 3;
+let waktu = 600;
+
+let halaman = 0;
+let timer;
+let waktuHabis = false;
 let jawaban = {};
 
 const soal = [
- {t:"Pancasila disahkan pada tanggal?",p:["1 Juni 1945","17 Agustus 1945","18 Agustus 1945","22 Juni 1945"],j:2},
- {t:"Sila ke-3 Pancasila adalah?",p:["Persatuan Indonesia","Kemanusiaan","Ketuhanan","Kerakyatan"],j:0},
- {t:"Lambang negara Indonesia adalah?",p:["Elang","Garuda Pancasila","Rajawali","Merpati"],j:1},
- {t:"Hari Kemerdekaan RI?",p:["20 Mei","17 Agustus","1 Juni","28 Oktober"],j:1},
- {t:"Makna Bhinneka Tunggal Ika?",p:["Persatuan","Berbeda tapi satu","Gotong royong","Keadilan"],j:1},
- {t:"Tugas utama Paskibraka?",p:["Upacara","Latihan","Mengibarkan bendera","Apel"],j:2},
- {t:"Makna warna merah?",p:["Suci","Berani","Damai","Makmur"],j:1},
- {t:"Makna warna putih?",p:["Berani","Makmur","Suci","Kuat"],j:2},
- {t:"UUD 1945 disahkan oleh?",p:["BPUPKI","PPKI","MPR","DPR"],j:1},
- {t:"Persatuan Indonesia sila ke?",p:["1","2","3","4"],j:2},
- {t:"Contoh nasionalisme?",p:["Membolos","Upacara bendera","Acuh","Melanggar"],j:1},
- {t:"Dasar negara Indonesia?",p:["UUD","Pancasila","MPR","DPR"],j:1},
- {t:"Lagu kebangsaan Indonesia?",p:["Garuda","Indonesia Raya","Bagimu Negeri","Tanah Airku"],j:1},
- {t:"Gotong royong mencerminkan sila?",p:["1","2","3","4"],j:2},
- {t:"Paskibraka berasal dari?",p:["SD","SMP","SMA","Mahasiswa"],j:2},
- {t:"Makna rela berkorban?",p:["Egoisme","Nasionalisme","Individualisme","Materialisme"],j:1},
- {t:"Semboyan negara Indonesia?",p:["Tut Wuri","Garuda","Bhinneka Tunggal Ika","Pancasila"],j:2},
- {t:"Bendera Indonesia?",p:["Putih merah","Merah putih","Merah biru","Putih biru"],j:1},
- {t:"Sikap Paskibraka saat tugas?",p:["Santai","Disiplin","Acuh","Bercanda"],j:1},
- {t:"Cinta tanah air berarti?",p:["Bangga negara sendiri","Acuh","Melanggar","Membandingkan"],j:0}
+  {
+    t: "Pancasila disahkan sebagai dasar negara pada tanggal?",
+    p: ["1 Juni 1945", "22 Juni 1945", "17 Agustus 1945", "18 Agustus 1945"],
+    j: 3,
+  },
+  {
+    t: "Sila ketiga Pancasila berbunyi?",
+    p: [
+      "Persatuan Indonesia",
+      "Kemanusiaan yang adil dan beradab",
+      "Ketuhanan Yang Maha Esa",
+      "Kerakyatan yang dipimpin oleh hikmat kebijaksanaan",
+    ],
+    j: 0,
+  },
+  {
+    t: "Lambang negara Indonesia adalah?",
+    p: ["Rajawali", "Elang", "Garuda Pancasila", "Cendrawasih"],
+    j: 2,
+  },
+  {
+    t: "Makna warna merah pada bendera Indonesia adalah?",
+    p: ["Kesucian", "Keberanian", "Keadilan", "Persatuan"],
+    j: 1,
+  },
+  {
+    t: "Makna warna putih pada bendera Indonesia adalah?",
+    p: ["Keberanian", "Kesucian", "Kekuatan", "Keteguhan"],
+    j: 1,
+  },
+  {
+    t: "Semboyan Bhinneka Tunggal Ika memiliki arti?",
+    p: [
+      "Bersatu kita teguh",
+      "Berbeda-beda tetapi tetap satu",
+      "Gotong royong",
+      "Persatuan dan kesatuan",
+    ],
+    j: 1,
+  },
+  {
+    t: "Paskibraka bertugas pada upacara?",
+    p: ["Apel pagi", "Upacara bendera", "Upacara adat", "Upacara sekolah"],
+    j: 1,
+  },
+  {
+    t: "Nilai utama yang harus dimiliki anggota Paskibraka adalah?",
+    p: ["Disiplin", "Kepandaian", "Kekayaan", "Popularitas"],
+    j: 0,
+  },
+  { t: "UUD 1945 disahkan oleh?", p: ["BPUPKI", "PPKI", "MPR", "DPR"], j: 1 },
+  {
+    t: "Contoh sikap cinta tanah air adalah?",
+    p: [
+      "Membolos sekolah",
+      "Mengikuti upacara bendera",
+      "Merusak fasilitas umum",
+      "Tidak taat aturan",
+    ],
+    j: 1,
+  },
+  {
+    t: "Persatuan dan kesatuan merupakan pengamalan sila ke?",
+    p: ["Satu", "Dua", "Tiga", "Empat"],
+    j: 2,
+  },
+  {
+    t: "Gotong royong mencerminkan nilai Pancasila sila?",
+    p: ["Kesatu", "Kedua", "Ketiga", "Keempat"],
+    j: 2,
+  },
+  {
+    t: "Lagu kebangsaan Indonesia adalah?",
+    p: ["Bagimu Negeri", "Indonesia Raya", "Garuda Pancasila", "Tanah Airku"],
+    j: 1,
+  },
+  {
+    t: "Sikap Paskibraka saat menjalankan tugas adalah?",
+    p: ["Santai", "Disiplin dan tanggung jawab", "Acuh", "Bercanda"],
+    j: 1,
+  },
+  {
+    t: "Makna rela berkorban bagi bangsa dan negara adalah?",
+    p: [
+      "Mementingkan diri sendiri",
+      "Mengutamakan kepentingan umum",
+      "Menghindari tugas",
+      "Mengharap imbalan",
+    ],
+    j: 1,
+  },
+  {
+    t: "Dasar negara Indonesia adalah?",
+    p: ["UUD 1945", "Pancasila", "Ketetapan MPR", "Peraturan Presiden"],
+    j: 1,
+  },
+  {
+    t: "Hari Kemerdekaan Indonesia diperingati setiap tanggal?",
+    p: ["20 Mei", "28 Oktober", "17 Agustus", "1 Juni"],
+    j: 2,
+  },
+  {
+    t: "Bendera Merah Putih pertama kali dikibarkan pada tahun?",
+    p: ["1944", "1945", "1946", "1950"],
+    j: 1,
+  },
+  {
+    t: "Contoh perilaku disiplin di sekolah adalah?",
+    p: [
+      "Datang terlambat",
+      "Memakai seragam sesuai aturan",
+      "Tidak mengerjakan tugas",
+      "Melanggar tata tertib",
+    ],
+    j: 1,
+  },
+  {
+    t: "Cinta tanah air berarti?",
+    p: [
+      "Membandingkan negara",
+      "Bangga dan menjaga bangsa sendiri",
+      "Mengkritik tanpa solusi",
+      "Mengabaikan aturan",
+    ],
+    j: 1,
+  },
 ];
 
-function mulaiUjian(){
- const nama=document.getElementById("nama").value.trim();
- const sekolah=document.getElementById("sekolah").value.trim();
- if(!nama||!sekolah)return alert("Lengkapi data!");
+function mulaiUjian() {
+  const nama = namaInput();
+  const sekolah = sekolahInput();
+  const daerah = daerahInput();
+  if (!nama || !sekolah || !daerah) return alert("Lengkapi data!");
 
- localStorage.setItem("nama",nama);
- localStorage.setItem("sekolah",sekolah);
-document.querySelector(".progress-box").classList.remove("hidden");
+  localStorage.setItem("nama", nama);
+  localStorage.setItem("sekolah", sekolah);
+  localStorage.setItem("daerah", daerah);
 
- document.querySelector(".info").classList.add("hidden");
- document.querySelector(".timer").classList.remove("hidden");
- document.getElementById("quizForm").classList.remove("hidden");
- document.getElementById("navSoal").classList.remove("hidden");
-buatNavigasiSoal();
+  document.querySelector(".info").classList.add("hidden");
+  document.querySelector(".timer").classList.remove("hidden");
+  document.querySelector(".progress-box").classList.remove("hidden");
+  navSoal.classList.remove("hidden");
+  quizForm.classList.remove("hidden");
 
-
- tampilkan();
- mulaiTimer();
-
- history.pushState(null,null,location.href);
- window.onpopstate=()=>history.go(1);
+  mulaiTimer();
+  tampilkan();
 }
 
 function mulaiTimer() {
   timer = setInterval(() => {
     waktu--;
-
-    let m = Math.floor(waktu / 60);
-    let d = waktu % 60;
-    time.textContent = `${m}:${d.toString().padStart(2, "0")}`;
-
+    time.textContent = `${Math.floor(waktu / 60)}:${String(waktu % 60).padStart(
+      2,
+      "0"
+    )}`;
     if (waktu <= 0) {
       waktuHabis = true;
       clearInterval(timer);
-      alert("Waktu habis! Jawaban sudah terkirim.");
-      kirim(); // ⬅️ AUTO SUBMIT
+      alert("Waktu habis, jawaban dikirim.");
+      kirim();
     }
   }, 1000);
 }
 
-
 function tampilkan() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo(0, 0);
   soalContainer.innerHTML = "";
-
-  let start = halaman * perHalaman;
+  const start = halaman * perHalaman;
 
   soal.slice(start, start + perHalaman).forEach((x, i) => {
-    let idx = start + i;
-
+    const idx = start + i;
     soalContainer.innerHTML += `
-      <div class="question">
-        <p>${idx + 1}. ${x.t}</p>
-        ${x.p.map((a, j) => `
-          <label>
-            <input
-              type="radio"
-              name="q${idx}"
-              value="${j}"
-              ${Number(jawaban[idx]) === j ? "checked" : ""}
-            >
-            <span>${a}</span>
-          </label>
-        `).join("")}
-      </div>
-    `;
-    buatNavigasiSoal();
-
+    <div class="question">
+      <p>${idx + 1}. ${x.t}</p>
+      ${x.p
+        .map(
+          (a, j) => `
+        <label>
+          <input type="radio" name="q${idx}" value="${j}"
+            ${jawaban[idx] === j ? "checked" : ""}>
+          ${a}
+        </label>`
+        )
+        .join("")}
+    </div>`;
   });
 
-  prevBtn.style.display = halaman === 0 ? "none" : "block";
   nextBtn.textContent =
-    (start + perHalaman) >= soal.length ? "Selesai" : "Berikutnya";
+    start + perHalaman >= soal.length ? "Selesai" : "Berikutnya ➡";
 
   pasangAutoSave();
   updateProgress();
+  buatNavigasi();
 }
 
-
-function simpan() {
-  let s = halaman * perHalaman;
-  soal.slice(s, s + perHalaman).forEach((_, i) => {
-    let idx = s + i;
-    let r = document.querySelector(`input[name=q${idx}]:checked`);
-    if (r) jawaban[idx] = Number(r.value);
+function pasangAutoSave() {
+  document.querySelectorAll("input[type=radio]").forEach((r) => {
+    r.onchange = () => {
+      jawaban[Number(r.name.replace("q", ""))] = Number(r.value);
+      updateProgress();
+      buatNavigasi();
+    };
   });
 }
 
-function berikutnya(){
- simpan();
- if((halaman+1)*perHalaman>=soal.length)kirim();
- else{halaman++;tampilkan();}
+function simpan() {
+  document.querySelectorAll("input[type=radio]:checked").forEach((r) => {
+    jawaban[Number(r.name.replace("q", ""))] = Number(r.value);
+  });
+}
+
+function berikutnya() {
+  simpan();
+  if ((halaman + 1) * perHalaman >= soal.length) {
+    kirim(); // ← INI KUNCI
+  } else {
+    halaman++;
+    tampilkan();
+  }
 }
 
 function sebelumnya() {
-  simpan(); // backup
+  simpan();
   if (halaman > 0) {
     halaman--;
     tampilkan();
   }
 }
 
+function semuaTerjawab() {
+  for (let i = 0; i < soal.length; i++) if (jawaban[i] === undefined) return i;
+  return -1;
+}
 
 function kirim() {
   simpan();
-
   if (!waktuHabis) {
-    const kosong = semuaTerjawab();
-    if (kosong !== -1) {
-      alert(`Soal nomor ${kosong + 1} belum dijawab!`);
-      halaman = Math.floor(kosong / perHalaman);
+    const k = semuaTerjawab();
+    if (k !== -1) {
+      alert(`Soal ${k + 1} belum dijawab`);
+      halaman = Math.floor(k / perHalaman);
       tampilkan();
       return;
     }
@@ -149,78 +258,45 @@ function kirim() {
   clearInterval(timer);
 
   let benar = 0;
-  soal.forEach((x, i) => {
-    if (Number(jawaban[i]) === x.j) benar++;
+  soal.forEach((s, i) => {
+    if (jawaban[i] === s.j) benar++;
   });
-
-  let nilai = Math.round((benar / soal.length) * 100);
+  const nilai = Math.round((benar / soal.length) * 100);
   localStorage.setItem("nilai", nilai);
 
-  const formData = new FormData();
-  formData.append("nama", localStorage.getItem("nama"));
-  formData.append("sekolah", localStorage.getItem("sekolah"));
-  formData.append("nilai", nilai);
+  const fd = new FormData();
+  fd.append("nama", localStorage.getItem("nama"));
+  fd.append("sekolah", localStorage.getItem("sekolah"));
+  fd.append("daerah", localStorage.getItem("daerah"));
+  fd.append("nilai", nilai);
 
-  fetch(API_URL, {
-    method: "POST",
-    body: formData
-  }).finally(() => {
-    window.location.href = "hasil.html";
-  });
-}
-
-
-
-
-function semuaTerjawab() {
-  for (let i = 0; i < soal.length; i++) {
-    if (jawaban[i] === undefined) {
-      return i; // kembalikan index soal yang kosong
-    }
-  }
-  return -1; // semua sudah terjawab
-}
-
-function pasangAutoSave() {
-  document.querySelectorAll("input[type=radio]").forEach(radio => {
-    radio.addEventListener("change", () => {
-      const idx = parseInt(radio.name.replace("q", ""));
-      jawaban[idx] = Number(radio.value);
-updateProgress();
-buatNavigasiSoal();
-
-    });
-  });
+  fetch(API_URL, { method: "POST", body: fd }).finally(
+    () => (location.href = "hasil.html")
+  );
 }
 
 function updateProgress() {
-  const terjawab = Object.keys(jawaban).length;
-  const total = soal.length;
-  const persen = Math.round((terjawab / total) * 100);
-
-  document.getElementById("progressText").textContent =
-    `${terjawab} / ${total} terjawab`;
-
-  document.getElementById("progressBar").style.width = `${persen}%`;
+  const j = Object.keys(jawaban).length;
+  progressBar.style.width = `${(j / soal.length) * 100}%`;
+  progressText.textContent = `${j} / ${soal.length}`;
 }
 
-function buatNavigasiSoal() {
-  const nav = document.getElementById("navSoal");
-  nav.innerHTML = "";
-
-  for (let i = 0; i < soal.length; i++) {
-    const btn = document.createElement("button");
-    btn.textContent = i + 1;
-
-    if (jawaban[i] !== undefined) btn.classList.add("answered");
-    if (Math.floor(i / perHalaman) === halaman) btn.classList.add("active");
-
-    btn.onclick = () => {
+function buatNavigasi() {
+  navSoal.innerHTML = "";
+  soal.forEach((_, i) => {
+    const b = document.createElement("button");
+    b.textContent = i + 1;
+    if (jawaban[i] !== undefined) b.classList.add("answered");
+    if (Math.floor(i / perHalaman) === halaman) b.classList.add("active");
+    b.onclick = () => {
       simpan();
       halaman = Math.floor(i / perHalaman);
       tampilkan();
     };
-
-    nav.appendChild(btn);
-  }
+    navSoal.appendChild(b);
+  });
 }
+
+const namaInput = () => nama.value.trim();
+const sekolahInput = () => sekolah.value.trim();
+const daerahInput = () => daerah.value.trim();

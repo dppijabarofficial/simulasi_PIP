@@ -1,50 +1,49 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ujian TWK Paskibraka</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CBT TWK Paskibraka</title>
 
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <img src="img/logo-dppi_20251220_232237_0000.png" class="header" />
 
-<div class="container">
-<h1>Ujian TWK Paskibraka</h1>
+      <div class="info">
+        <h2>Login Peserta</h2>
+        <input id="nama" placeholder="Nama Lengkap" />
+        <input id="sekolah" placeholder="Asal Sekolah" />
+        <input id="daerah" placeholder="Kabupaten / Kota" />
+        <button onclick="mulaiUjian()">Mulai Ujian</button>
+      </div>
 
-<div class="info">
-<input id="nama" placeholder="Nama Peserta">
-<input id="sekolah" placeholder="Asal Sekolah">
-<button onclick="mulaiUjian()">Mulai Ujian</button>
-</div>
+      <div class="timer hidden">⏰ <span id="time">10:00</span></div>
 
-<div class="timer hidden">
-⏱️ Waktu Tersisa: <span id="time">10:00</span>
-</div>
+      <div class="progress-box hidden">
+        <div class="progress"><div id="progressBar"></div></div>
+        <small id="progressText">0 / 20</small>
+      </div>
 
-<div class="progress-box hidden">
-  <div class="progress-info">
-    <span id="progressText">0 / 20 terjawab</span>
-  </div>
-  <div class="progress">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-</div>
+      <div id="navSoal" class="nav-soal hidden"></div>
 
-<div class="nav-soal hidden" id="navSoal"></div>
+      <form id="quizForm" class="hidden">
+        <div id="soalContainer"></div>
 
+        <div class="nav-btn">
+          <button type="button" onclick="sebelumnya()">⬅ Kembali</button>
+          <button type="button" id="nextBtn" onclick="berikutnya()">
+            Berikutnya ➡
+          </button>
+        </div>
+      </form>
+    </div>
 
-<form id="quizForm" class="hidden">
-<div id="soalContainer"></div>
-
-<div class="nav">
-<button type="button" id="prevBtn" onclick="sebelumnya()">⬅ Sebelumnya</button>
-<button type="button" id="nextBtn" onclick="berikutnya()">Berikutnya ➡</button>
-</div>
-</form>
-</div>
-
-<script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
